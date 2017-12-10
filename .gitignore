@@ -1,0 +1,6 @@
+data
+.DS_Store
+thumbs.db
+*.pyc
+__pycache__
+
