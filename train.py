@@ -10,7 +10,7 @@ def train():
 
     model.fit(
         x=train[0], y=train[1],
-        batch_size=128, epochs=100, callbacks=None,
+        batch_size=48, epochs=100, callbacks=None,
         validation_data = validation
     )
 

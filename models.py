@@ -14,25 +14,25 @@ def spectrogram_cnn(num_classes=31, input_length=16000):
     model.add(Spectrogram(n_dft=512, n_hop=128, return_decibel_spectrogram=True))
 
     # conv 1
-    model.add(Conv2D(1024, kernel_size=(3, 3), activation='relu', padding='same', name='layer1_conv'))
+    model.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same', name='layer1_conv'))
     model.add(BatchNormalization(name='layer1_bn'))
     model.add(Dropout(0.25, name='layer1_dropout'))
     model.add(MaxPool2D(pool_size=(2,2), name='layer1_maxpool'))
 
     # conv 2
-    model.add(Conv2D(512, kernel_size=(3, 3), activation='relu', padding='same', name='layer2_conv'))
+    model.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same', name='layer2_conv'))
     model.add(BatchNormalization(name='layer2_bn'))
     model.add(Dropout(0.25, name='layer2_dropout'))
     model.add(MaxPool2D(pool_size=(2,2), name='layer2_maxpool'))
 
     # conv 3
-    model.add(Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same', name='layer3_conv'))
+    model.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same', name='layer3_conv'))
     model.add(BatchNormalization(name='layer3_bn'))
     model.add(Dropout(0.25, name='layer3_dropout'))
     model.add(MaxPool2D(pool_size=(2,2), name='layer3_maxpool'))
 
     # conv 4
-    model.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same', name='layer4_conv'))
+    model.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same', name='layer4_conv'))
     model.add(BatchNormalization(name='layer4_bn'))
     model.add(Dropout(0.25, name='layer4_dropout'))
     model.add(MaxPool2D(pool_size=(2,2), name='layer4_maxpool'))
@@ -45,7 +45,7 @@ def spectrogram_cnn(num_classes=31, input_length=16000):
 
     # dense
     model.add(Flatten(name='layer6_flatten'))
-    model.add(Dense(512, activation='relu', name='layer6_dense'))
+    model.add(Dense(128, activation='relu', name='layer6_dense'))
     model.add(BatchNormalization(name='layer6_bn'))
     model.add(Dropout(0.25, name='layer6_dropout'))
 
