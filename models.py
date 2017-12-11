@@ -1,8 +1,8 @@
 from keras.models import Sequential
 from keras.layers import *
-from kapre.time_frequency import Spectrogram
+from kapre.time_frequency import Spectrogram, Melspectrogram
 
-def spectrogram_cnn(num_classes=31, input_length=16000):
+def spectrogram_cnn(num_classes=31, input_length=16000, mel=False):
     """
     31-class classifier based on convolutional neural network
 
@@ -11,7 +11,12 @@ def spectrogram_cnn(num_classes=31, input_length=16000):
     """
     model = Sequential()
     model.add(Reshape(target_shape=(1, input_length), input_shape=(input_length,)))
-    model.add(Spectrogram(n_dft=512, n_hop=128, return_decibel_spectrogram=True))
+
+    if mel:
+        model.add(Melspectrogram(sr=16000, n_mels=32, return_decibel_melgram=True, n_dft=512, n_hop=128))
+    else:
+        model.add(Spectrogram(n_dft=512, n_hop=128, return_decibel_spectrogram=True))
+
 
     # conv 1
     model.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same', name='layer1_conv'))
@@ -38,10 +43,11 @@ def spectrogram_cnn(num_classes=31, input_length=16000):
     model.add(MaxPool2D(pool_size=(2,2), name='layer4_maxpool'))
 
     # conv 5
-    model.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same', name='layer5_conv'))
-    model.add(BatchNormalization(name='layer5_bn'))
-    model.add(Dropout(0.25, name='layer5_dropout'))
-    model.add(MaxPool2D(pool_size=(2,2), name='layer5_maxpool'))
+    if not mel:
+        model.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same', name='layer5_conv'))
+        model.add(BatchNormalization(name='layer5_bn'))
+        model.add(Dropout(0.25, name='layer5_dropout'))
+        model.add(MaxPool2D(pool_size=(2,2), name='layer5_maxpool'))
 
     # dense
     model.add(Flatten(name='layer6_flatten'))
