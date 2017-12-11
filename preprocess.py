@@ -119,9 +119,14 @@ def preprocess_dataset(audio_path="data/train/audio", output_path="data/preproce
 
 def preprocess_test_dataset(audio_path='data/test/audio', output_path='data/preprocessed'):
     files = [f for f in os.listdir(audio_path) if f.endswith('.wav')]
-    data = []
+    files.sort()
+    assert len(files) == 158538
 
-    for filename in tqdm(files, desc="Loading files"):
+    data = []
+    loop = tqdm(files)
+
+    for filename in loop:
+        loop.set_postfix({'file': filename})
         fs, w = wavfile.read(os.path.join(audio_path, filename))
         assert fs == 16000
         assert len(w.shape) == 1 and len(w) <= 16000
