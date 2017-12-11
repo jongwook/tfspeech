@@ -117,5 +117,29 @@ def preprocess_dataset(audio_path="data/train/audio", output_path="data/preproce
             with open(path, 'wb') as f:
                 np.save(f, matrix)
 
+def preprocess_test_dataset(audio_path='data/test/audio', output_path='data/preprocessed'):
+    files = [f for f in os.listdir(audio_path) if f.endswith('.wav')]
+    data = []
+
+    for filename in tqdm(files, desc="Loading files"):
+        fs, w = wavfile.read(os.path.join(audio_path, filename))
+        assert fs == 16000
+        assert len(w.shape) == 1 and len(w) <= 16000
+
+        if len(w) < 16000:
+            pad = 16000 - len(w)
+            pad_left = pad // 2
+            pad_right = pad - pad_left
+            w = np.pad(w, (pad_left, pad_right), mode='constant')
+
+        assert len(w) == 16000
+        data.append(w)
+
+    matrix = np.vstack(data)
+    assert matrix.shape[0] > 0 and matrix.shape[1] == 16000
+    path = os.path.join(output_path, 'test.npy')
+    with open(path, 'wb') as f:
+        np.save(f, matrix)
+
 if __name__ == "__main__":
     preprocess_dataset()
