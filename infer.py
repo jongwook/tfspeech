@@ -1,6 +1,10 @@
-import keras
+import os
 import sys
 import numpy as np
+
+import keras
+from keras.models import load_model
+from kapre.time_frequency import Spectrogram, Melspectrogram
 
 # yes, no, up, down, left, right, on, off, stop, go
 mapping = {
@@ -31,7 +35,7 @@ mapping = {
     "three": "unknown",
     "tree": "unknown",
     "two": "unknown",
-    "up": "unknown",
+    "up": "up",
     "wow": "unknown",
     "yes": "yes",
     "zero": "unknown"
@@ -46,7 +50,7 @@ string_for_label = [mapping[s] for s in sorted_keys]
 
 print("Model: ", sys.argv[1])
 
-model = keras.load(sys.argv[1])
+model = load_model(sys.argv[1], {'Spectrogram': Spectrogram, 'Melspectrogram': Melspectrogram})
 data_path = 'data/preprocessed/test.npy'
 
 print("Loading test data...")
@@ -58,10 +62,10 @@ print("Predicting...")
 prediction = model.predict(data, batch_size=64, verbose=1)
 prediction = np.argmax(prediction, axis=1)
 
-filenames = [f for f in os.listdir(audio_path) if f.endswith('.wav')]
+filenames = [f for f in os.listdir('data/test/audio') if f.endswith('.wav')]
 filenames.sort()
 
-with open("submission.csv") as f:
+with open("submission.csv", "w") as f:
     print("fname,label", file=f)
-    for i in len(filenames):
-        print("%s,%s" % (filenames[i], string_for_label[prediction[i]]))
+    for i in range(len(filenames)):
+        print("%s,%s" % (filenames[i], string_for_label[prediction[i]]), file=f)
