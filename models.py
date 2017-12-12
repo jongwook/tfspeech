@@ -89,7 +89,7 @@ def spectrogram_lstm(num_classes=31, input_length=16000, mel=False):
     model.add(Conv2D(32, kernel_size=(9, 1), activation='relu', padding='same', name='layer3_conv'))
     model.add(BatchNormalization(name='layer3_bn'))
     model.add(Dropout(0.25, name='layer3_dropout'))
-    model.add(MaxPool2D(pool_size=(2, 1), name='layer4_maxpool'))
+    model.add(MaxPool2D(pool_size=(2, 1), name='layer3_maxpool'))
 
     model.add(Conv2D(32, kernel_size=(9, 1), activation='relu', padding='same', name='layer4_conv'))
     model.add(BatchNormalization(name='layer4_bn'))
@@ -98,8 +98,8 @@ def spectrogram_lstm(num_classes=31, input_length=16000, mel=False):
 
     model.add(Conv2D(32, kernel_size=(9, 1), activation='relu', padding='same', name='layer5_conv'))
     model.add(BatchNormalization(name='layer5_bn'))
-    model.add(Dropout(0.25, name='layer3_dropout'))
-    model.add(MaxPool2D(pool_size=(2, 1), name='layer4_maxpool'))
+    model.add(Dropout(0.25, name='layer5_dropout'))
+    model.add(MaxPool2D(pool_size=(2, 1), name='layer5_maxpool'))
 
     model.add(Conv2D(32, kernel_size=(9, 1), activation='relu', padding='same', name='layer6_conv'))
     model.add(BatchNormalization(name='layer6_bn'))
@@ -108,10 +108,9 @@ def spectrogram_lstm(num_classes=31, input_length=16000, mel=False):
     # # lstm
     model.add(Permute((1, 3, 2), name='layer7_permute'))
     shape = model.output_shape
-
     model.add(Reshape((shape[1] * shape[2], shape[3]), name='layer7_reshape'))
-    model.add(LSTM(64, return_sequences=True, name='layer6_lstm'))
-    model.add(LSTM(64, name='layer7_lstm'))
+    model.add(LSTM(64, return_sequences=True, name='layer7_lstm'))
+    model.add(LSTM(64, name='layer8_lstm'))
     model.add(Dense(num_classes, activation='softmax', name='output_softmax'))
 
     return model
