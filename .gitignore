@@ -3,4 +3,4 @@ data
 thumbs.db
 *.pyc
 __pycache__
-
+.idea

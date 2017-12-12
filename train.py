@@ -7,9 +7,10 @@ import models
 import data
 
 def train():
-    model = models.spectrogram_cnn(mel=True)
     train, validation, test = data.load()
 
+    model = models.spectrogram_lstm(mel=True)
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     model.summary()
 
     checkpointer = ModelCheckpoint(filepath='/tmp/tfspeech-%d.hdf5' % int(time.time()), verbose=1, save_best_only=True)
