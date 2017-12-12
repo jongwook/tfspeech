@@ -79,7 +79,7 @@ def spectrogram_lstm(num_classes=31, input_length=16000, mel=False):
     model.add(Conv2D(64, kernel_size=(9, 1), activation='relu', padding='same', name='layer1_conv'))
     model.add(BatchNormalization(name='layer1_bn'))
     model.add(Dropout(0.25, name='layer1_dropout'))
-    model.add(MaxPool2D(pool_size=(2, 1), name='layer4_maxpool'))
+    model.add(MaxPool2D(pool_size=(2, 1), name='layer1_maxpool'))
 
     model.add(Conv2D(64, kernel_size=(9, 1), activation='relu', padding='same', name='layer2_conv'))
     model.add(BatchNormalization(name='layer2_bn'))
