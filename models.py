@@ -96,3 +96,29 @@ def spectrogram_lstm(num_classes=31, input_length=16000):
     model.add(Dense(num_classes, activation='softmax', name='output_softmax'))
 
     return model
+
+
+
+def spectrogram_pure_lstm(num_classes=31, input_length=16000):
+    """
+        31-class classifier based on 1D convolutional neural network using LSTM
+
+        input_size: (None, input_length)
+        output_size: (None, num_classes)
+    """
+    model = Sequential()
+    model.add(Reshape(target_shape=(1, input_length), input_shape=(input_length,)))
+
+    model.add(Melspectrogram(sr=16000, n_mels=32, return_decibel_melgram=True, n_dft=512, n_hop=128))
+
+    # # lstm
+    model.add(Permute((1, 3, 2), name='layer1_permute'))
+    shape = model.output_shape
+    model.add(Reshape((shape[1] * shape[2], shape[3]), name='layer1_reshape'))
+    model.add(LSTM(64, return_sequences=True, name='layer1_lstm'))
+    model.add(Dropout(0.2))
+    model.add(LSTM(64, name='layer2_lstm'))
+
+    model.add(Dense(num_classes, activation='softmax', name='output_softmax'))
+
+    return model
