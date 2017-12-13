@@ -9,7 +9,7 @@ import data
 def train():
     train, validation, test = data.load()
 
-    model = models.spectrogram_lstm(mel=True)
+    model = models.spectrogram_lstm()
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     model.summary()
 
