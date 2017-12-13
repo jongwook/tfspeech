@@ -91,7 +91,7 @@ def spectrogram_lstm(num_classes=31, input_length=16000):
     model.add(Permute((1, 3, 2), name='layer4_permute'))
     shape = model.output_shape
     model.add(Reshape((shape[1] * shape[2], shape[3]), name='layer4_reshape'))
-    model.add(LSTM(64, return_sequences=True, name='layer4_lstm'))
+    model.add(LSTM(64, name='layer4_lstm'))
 
     model.add(Dense(num_classes, activation='softmax', name='output_softmax'))
 
