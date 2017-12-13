@@ -112,6 +112,7 @@ def preprocess_dataset(audio_path="data/train/audio", output_path="data/preproce
 
         for split in data.keys():
             matrix = np.vstack(data[split])
+            matrix = normalize(matrix, norm=2, axis=1)
             assert matrix.shape[0] > 0 and matrix.shape[1] == 16000
             path = os.path.join(output_path, split, label + ".npy")
             with open(path, 'wb') as f:
@@ -141,6 +142,7 @@ def preprocess_test_dataset(audio_path='data/test/audio', output_path='data/prep
         data.append(w)
 
     matrix = np.vstack(data)
+    matrix = normalize(matrix, norm=2, axis=1)
     assert matrix.shape[0] > 0 and matrix.shape[1] == 16000
     path = os.path.join(output_path, 'test.npy')
     with open(path, 'wb') as f:

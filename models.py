@@ -109,7 +109,7 @@ def spectrogram_pure_lstm(num_classes=31, input_length=16000):
     model = Sequential()
     model.add(Reshape(target_shape=(1, input_length), input_shape=(input_length,)))
 
-    model.add(Melspectrogram(sr=16000, n_mels=32, return_decibel_melgram=True, n_dft=512, n_hop=128))
+    model.add(Melspectrogram(sr=16000, n_mels=32, return_decibel_melgram=True, n_dft=512, n_hop=256))
 
     # # lstm
     model.add(Permute((1, 3, 2), name='layer1_permute'))
